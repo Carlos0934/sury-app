@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { v4 } from 'uuid'
+import 'react-native-get-random-values'
+import {v4} from 'uuid'
 import { Order } from '../data'
 
 export class OrderRepository {
@@ -16,11 +17,21 @@ export class OrderRepository {
     return order
   }
 
-  async remove(orderToRemove: Order): Promise<Order> {
+  async remove(ordersToRemove: Record<string, Order>): Promise< Record<string, Order>> {
     let orders = await this.findAll()
-    orders = orders.filter((order) => order.key !== orderToRemove.key)
+    const ordersRemoved : Record<string, Order> = {}
+    console.log(ordersRemoved)
+    orders = orders.filter((order) => {
+      if (Boolean(ordersToRemove[order.key]))
+      {
+        console.log(order.key)
+        ordersRemoved[order.key] = order
+        return true
+      }  
+      return false
+    })
     await AsyncStorage.setItem(this.key, JSON.stringify(orders))
-    return orderToRemove
+    return ordersRemoved
   }
 
   async update(orderToUpdate: Order): Promise<Order> {

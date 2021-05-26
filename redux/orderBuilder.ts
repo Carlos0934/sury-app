@@ -19,6 +19,7 @@ export const toggleClient = createAction<Client | undefined>(
 export const addItem = createAction<ItemQuantity>('@OrderBuilder/addItem')
 export const removeItem = createAction<Item>('@OrderBuilder/removeItem')
 export const setTotal = createAction('@OrderBuilder/setTotal')
+export const resetBuilder = createAction('@OrderBuilder/reset')
 export const OrderBuilderReducer = createReducer<OrderBuilderState>(
   defaultState,
   (builder) => {
@@ -44,6 +45,9 @@ export const OrderBuilderReducer = createReducer<OrderBuilderState>(
         (prev, act) => prev + act.item.price,
         0
       )
+    })
+    builder.addCase(resetBuilder, () => {
+      return defaultState
     })
   }
 )

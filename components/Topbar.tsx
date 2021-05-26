@@ -1,7 +1,8 @@
 import * as React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Alert, StyleSheet, View } from 'react-native'
 import { Header, Icon } from 'react-native-elements'
-import { useAppSelector } from '../redux/store'
+import { removeOrders } from '../redux/order'
+import { useAppDispatch, useAppSelector } from '../redux/store'
 
 export const Topbar = () => {
   const count = useAppSelector((state) => state.selected.count)
@@ -23,6 +24,22 @@ export const Topbar = () => {
 }
 
 export const Toolbar = () => {
+  const orders = useAppSelector(state =>state.selected.orders)
+  const dispatch = useAppDispatch()
+  const deleteToolbar = () => {
+    Alert.alert('Borrar pedidos', 'Esta seguro que desea borrar los pedidos selecionados?', [
+     
+      {
+        text : 'No'
+      },
+      {
+        text : 'Si',
+        onPress : () =>   dispatch(removeOrders(orders))
+      },
+    ])
+   
+    
+  }
   return (
     <View style={styles.toolbar}>
       <Icon
@@ -36,6 +53,7 @@ export const Toolbar = () => {
         size={30}
         name='delete'
         style={styles.toolbarIcon}
+        onPress = {deleteToolbar}
       />
     </View>
   )

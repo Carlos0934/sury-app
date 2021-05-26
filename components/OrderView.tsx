@@ -1,10 +1,8 @@
-import { useNavigation } from '@react-navigation/core'
+
 import * as React from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
-import { Divider, FAB, Icon, ListItem, Text } from 'react-native-elements'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { Screens } from '../navigation'
-import { useAppSelector } from '../redux/store'
+import { Divider,Text } from 'react-native-elements'
+
 import { Client, ItemQuantity, Order } from '../src/data'
 import { CompleteOrderAction } from './CompleteOrderAction'
 
@@ -29,14 +27,19 @@ export const OrderView: React.FC<OrderViewProps> = ({ order, edit }) => {
         </Text>
         <Divider />
         <FlatList
+        keyExtractor = {(item) => item.item.id.toString() }
           data={order.items}
           renderItem={({ item }) => (
-            <View key={item.item.id} style={styles.item}>
-              <Text>
-                {`${item.item.name} $${item.item.price} ${item.quantity}  $${
-                  item.item.price * item.quantity
-                }`}
-              </Text>
+            <View key={item.item.id.toString()} style={styles.item}>
+              <Text style = {[styles.itemName, styles.itemText]}>{item.item.name}</Text>
+              <View style = {styles.itemDetail}>
+              
+                <Text style = {styles.itemNumber}> Precio: ${item.item.price}  Cantidad: {item.quantity}</Text>
+               
+              </View>
+              <Text  style = {styles.itemTotal}> Total:{ item.item.price * item.quantity}</Text>
+              
+              
             </View>
           )}
         />
@@ -54,5 +57,42 @@ const styles = StyleSheet.create({
   container: {
     marginTop: '10%',
   },
-  item: {},
+  item: {
+    marginVertical : 10,
+    width : '100%',
+    backgroundColor : '#fff',
+    elevation: 2,
+    paddingVertical: 7,
+    paddingHorizontal : 10
+    
+  },
+  itemName : {
+    fontWeight : '700',
+    fontStyle : 'italic'
+  },
+  itemDetail : {
+    flexDirection : 'row',
+    alignContent : 'center',
+    justifyContent : 'center',
+    marginVertical : 4
+    
+  },
+ itemText : {
+  fontSize : 18,
+  textAlign : 'center',
+  marginTop : 2
+
+ },
+ itemNumber : {
+  fontSize : 15,
+  textAlign : 'center',
+  
+   
+ },
+ itemTotal : {
+  fontSize : 16,
+  fontWeight : '700',
+  textAlign : 'center',
+  padding : 2
+ }
 })

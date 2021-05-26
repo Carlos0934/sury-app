@@ -1,14 +1,20 @@
+import { useNavigation } from '@react-navigation/core'
 import * as React from 'react'
 import { Alert } from 'react-native'
 import { FAB } from 'react-native-elements'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import { v4 } from 'uuid'
+import { Screens } from '../navigation'
 import { addOrder } from '../redux/order'
+import { resetBuilder } from '../redux/orderBuilder'
 import { useAppDispatch, useAppSelector } from '../redux/store'
 
 export const CompleteOrderAction = () => {
   const { items, client, total } = useAppSelector((state) => state.builder)
   const dispatch = useAppDispatch()
+ 
+  const {navigate} = useNavigation()
+
   const completeOrder = () => {
     const parsedItems = Object.values(items)
     if (!client || parsedItems.length === 0) return
@@ -22,21 +28,26 @@ export const CompleteOrderAction = () => {
         sent: false,
         total,
       })
+      
     )
+    dispatch(resetBuilder())
+    navigate(Screens.Root)
+   
   }
   return (
     <FAB
       onPress={() => {
         Alert.alert(
           'Confirmación',
-          'Esta seguro que desea completar la orden?',
+          '¿Esta seguro que desea completar la orden?',
           [
+          
+            {
+              text: 'Cancel',
+            },
             {
               onPress: completeOrder,
               text: 'Ok',
-            },
-            {
-              text: 'Cancel',
             },
           ]
         )

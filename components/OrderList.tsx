@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { SafeAreaView, View } from 'react-native'
+import { Alert, SafeAreaView, Vibration, View } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 
 import { toggleSelectedOrder } from '../redux/selectdOrders'
@@ -12,7 +12,12 @@ export const OrderList = () => {
   const { orders } = useAppSelector((state) => state.selected)
   const dispatch = useAppDispatch()
   const onSelect = React.useCallback((order: Order) => {
-    dispatch(toggleSelectedOrder(order.key))
+    if(order.sent){
+      Vibration.vibrate([0, 400])
+      Alert.alert('Pedido ya enviado', 'no puedes enviar o borrar un pedido ya enviado.')
+    }
+    else
+    dispatch(toggleSelectedOrder(order))
   }, [])
   return (
     <FlatList
@@ -23,7 +28,7 @@ export const OrderList = () => {
           order={item}
           key={index}
           onSelect={onSelect}
-          selected={orders[item.key] ?? false}
+          selected={ Boolean(orders[item.key]) }
         />
       )}
     />

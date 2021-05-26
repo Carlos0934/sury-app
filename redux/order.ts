@@ -8,158 +8,7 @@ interface OrderState {
   error: boolean
 }
 const defaultState: OrderState = {
-  data: [
-    {
-      client: {
-        name: 'roberto pablo segundo',
-        address: '',
-        id: 0,
-        lastname: '',
-        phoneNumber: '',
-      },
-      items: [],
-      total: 0,
-      key: '',
-      sent: false,
-      created: new Date().toString(),
-      id: 1,
-    },
-    {
-      client: {
-        name: 'roberto pablo segundo',
-        address: '',
-        id: 0,
-        lastname: '',
-        phoneNumber: '',
-      },
-      items: [],
-      total: 0,
-      key: '2',
-      sent: false,
-      created: new Date().toString(),
-      id: 1,
-    },
-    {
-      client: {
-        name: 'roberto pablo segundo',
-        address: '',
-        id: 0,
-        lastname: '',
-        phoneNumber: '',
-      },
-      items: [],
-      total: 0,
-      key: '3',
-      sent: false,
-      created: new Date().toString(),
-      id: 1,
-    },
-    {
-      client: {
-        name: 'roberto pablo segundo',
-        address: '',
-        id: 0,
-        lastname: '',
-        phoneNumber: '',
-      },
-      items: [],
-      total: 0,
-      key: '4',
-      sent: false,
-      created: new Date().toString(),
-      id: 1,
-    },
-    {
-      client: {
-        name: 'roberto pablo segundo',
-        address: '',
-        id: 0,
-        lastname: '',
-        phoneNumber: '',
-      },
-      items: [],
-      total: 0,
-      key: '5',
-      sent: false,
-      created: new Date().toString(),
-      id: 1,
-    },
-    {
-      client: {
-        name: 'roberto pablo segundo',
-        address: '',
-        id: 0,
-        lastname: '',
-        phoneNumber: '',
-      },
-      items: [],
-      total: 0,
-      key: '6',
-      sent: false,
-      created: new Date().toString(),
-      id: 1,
-    },
-    {
-      client: {
-        name: 'roberto pablo segundo',
-        address: '',
-        id: 0,
-        lastname: '',
-        phoneNumber: '',
-      },
-      items: [],
-      total: 0,
-      key: '7',
-      sent: false,
-      created: new Date().toString(),
-      id: 1,
-    },
-    {
-      client: {
-        name: 'roberto pablo segundo',
-        address: '',
-        id: 0,
-        lastname: '',
-        phoneNumber: '',
-      },
-      items: [],
-      total: 0,
-      key: '8',
-      sent: false,
-      created: new Date().toString(),
-      id: 1,
-    },
-    {
-      client: {
-        name: 'roberto pablo segundo',
-        address: '',
-        id: 0,
-        lastname: '',
-        phoneNumber: '',
-      },
-      items: [],
-      total: 0,
-      key: '9',
-      sent: false,
-      created: new Date().toString(),
-      id: 1,
-    },
-    {
-      client: {
-        name: 'roberto pablo segundo',
-        address: '',
-        id: 0,
-        lastname: '',
-        phoneNumber: '',
-      },
-      items: [],
-      total: 0,
-      key: '0',
-      sent: false,
-      created: new Date().toString(),
-      id: 1,
-    },
-  ],
+  data : [],
   loading: false,
   error: false,
 }
@@ -187,10 +36,10 @@ export const updateOrder = createAsyncThunk(
     return await orderRepository.update(order)
   }
 )
-export const removeOrder = createAsyncThunk(
+export const removeOrders = createAsyncThunk(
   '@order/remove',
-  async (order: Order) => {
-    return (await orderRepository.remove(order)).key
+  async (orders: Record<string, Order>) => {
+    return (await orderRepository.remove(orders))
   }
 )
 
@@ -268,26 +117,26 @@ export const orderReducer = createReducer<OrderState>(
       }
     })
 
-    builder.addCase(removeOrder.pending, (state, action) => {
+    builder.addCase(removeOrders.pending, (state, action) => {
       return {
         loading: true,
         data: state.data,
         error: false,
       }
     })
-    builder.addCase(removeOrder.rejected, (state, action) => {
+    builder.addCase(removeOrders.rejected, (state, action) => {
       return {
         loading: false,
         data: state.data,
         error: true,
       }
     })
-    builder.addCase(removeOrder.fulfilled, (state, action) => {
-      return {
-        loading: false,
-        data: state.data.filter((order) => order.key !== action.payload),
-        error: false,
-      }
+    builder.addCase(removeOrders.fulfilled, (state, action) => {
+      state.loading = false
+      state.error = false
+     
+      state.data = state.data.filter((order) =>  !Boolean(action.payload[order.key]))
+     
     })
 
     builder.addCase(updateOrder.pending, (state, action) => {
