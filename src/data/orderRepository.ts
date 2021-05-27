@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import 'react-native-get-random-values'
-import {v4} from 'uuid'
+import { v4 } from 'uuid'
 import { Order } from '../data'
 
 export class OrderRepository {
@@ -17,18 +17,18 @@ export class OrderRepository {
     return order
   }
 
-  async remove(ordersToRemove: Record<string, Order>): Promise< Record<string, Order>> {
+  async remove(
+    ordersToRemove: Record<string, Order>
+  ): Promise<Record<string, Order>> {
     let orders = await this.findAll()
-    const ordersRemoved : Record<string, Order> = {}
-    console.log(ordersRemoved)
+    const ordersRemoved: Record<string, Order> = {}
+
     orders = orders.filter((order) => {
-      if (Boolean(ordersToRemove[order.key]))
-      {
-        console.log(order.key)
+      if (Boolean(ordersToRemove[order.key])) {
         ordersRemoved[order.key] = order
-        return true
-      }  
-      return false
+        return false
+      }
+      return true
     })
     await AsyncStorage.setItem(this.key, JSON.stringify(orders))
     return ordersRemoved
@@ -56,9 +56,32 @@ export class OrderRepository {
     const orders = await this.findAll()
     return orders.find((order) => order.key === key)
   }
-
+  private async send(order: Order) {}
   async sendOne(order: Order) {
-    /// call api and send order
     order.sent = true
+    // call api call
+    await this.update(order)
+    return order.key
+  }
+  async completeDay(orders: Order[]): Promise<Record<string, boolean>> {
+    const now = new Date()
+    const keys: Record<string, boolean> = {}
+    for (const order of orders) {
+      const createdAt = new Date(order.created)
+      if (this.sameDay(createdAt, now)) {
+        await this.send(order)
+        await this.remove({ [order.key]: order })
+        keys[order.key] = true
+      }
+    }
+    return keys
+  }
+
+  private sameDay(d1: Date, d2: Date) {
+    return (
+      d1.getUTCFullYear() === d2.getUTCFullYear() &&
+      d1.getUTCMonth() === d2.getUTCMonth() &&
+      d1.getUTCDate() === d2.getUTCDate()
+    )
   }
 }

@@ -14,6 +14,7 @@ import NotFoundScreen from '../screens/NotFoundScreen'
 import { RootStackParamList } from '../types'
 import LinkingConfiguration from './LinkingConfiguration'
 import { OrderScreen } from '../screens/OrderScreen'
+import LoginScreen from '../screens/LoginScreen'
 
 export default function Navigation() {
   return (
@@ -33,14 +34,16 @@ export enum Screens {
   SelectClient = 'SelectClient',
   SelectItems = 'SelectItem',
   Order = 'Order',
+  Login = 'Login',
 }
 
 function RootNavigator() {
   return (
     <Stack.Navigator
-      initialRouteName='Root'
+      initialRouteName='Login'
       screenOptions={{ headerShown: false }}
     >
+      <Stack.Screen name='Login' component={LoginScreen} />
       <Stack.Screen name='Root' component={HomeScreen} />
       <Stack.Screen name='SelectClient' component={SelectClientScreen} />
       <Stack.Screen name='SelectItem' component={SelectItemScreen} />

@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
+
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { orderReducer } from './order'
 import { OrderBuilderReducer } from './orderBuilder'
 import { selectedOrdersReducer } from './selectdOrders'
 import { SyncReducer } from './sync'
+import { UserReducer } from './user'
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +13,7 @@ export const store = configureStore({
     selected: selectedOrdersReducer,
     sync: SyncReducer,
     builder: OrderBuilderReducer,
+    user: UserReducer,
   },
 })
 

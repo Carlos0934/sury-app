@@ -9,4 +9,5 @@ export type RootStackParamList = {
   SelectClient: undefined
   SelectItem: undefined
   Order: undefined
+  Login: undefined
 }

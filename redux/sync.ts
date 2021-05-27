@@ -33,16 +33,16 @@ export const findClients = createAsyncThunk<Client[]>(
       {
         id: 1,
         address: '',
-        lastname: 'olivo',
+        lastname: 'Olivo Sanchez',
         phoneNumber: '',
-        name: 'roberto',
+        name: 'Carlos',
       },
       {
         id: 2,
         address: '',
-        lastname: 'olivo',
+        lastname: 'Joseador',
         phoneNumber: '',
-        name: 'roberto',
+        name: 'Josias',
       },
     ])
   }
@@ -51,13 +51,23 @@ export const findItems = createAsyncThunk('@sync/fetchItems', async () => {
   return [
     {
       id: 1,
-      name: 'helado',
+      name: 'Dulce de leche',
       price: 20,
     },
     {
       id: 2,
-      name: 'helado frio buenardo',
-      price: 20,
+      name: 'Chocolate del 9 ',
+      price: 5,
+    },
+    {
+      id: 3,
+      name: 'Refresco',
+      price: 15,
+    },
+    {
+      id: 4,
+      name: 'Empanada',
+      price: 25,
     },
   ] as Item[]
 })

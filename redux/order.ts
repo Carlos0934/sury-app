@@ -8,7 +8,7 @@ interface OrderState {
   error: boolean
 }
 const defaultState: OrderState = {
-  data : [],
+  data: [],
   loading: false,
   error: false,
 }
@@ -39,10 +39,16 @@ export const updateOrder = createAsyncThunk(
 export const removeOrders = createAsyncThunk(
   '@order/remove',
   async (orders: Record<string, Order>) => {
-    return (await orderRepository.remove(orders))
+    return await orderRepository.remove(orders)
   }
 )
 
+export const completeDay = createAsyncThunk(
+  '@order/completeDay',
+  async (orders: Order[]) => {
+    return await orderRepository.completeDay(orders)
+  }
+)
 export const orderReducer = createReducer<OrderState>(
   defaultState,
   (builder) => {
@@ -134,9 +140,10 @@ export const orderReducer = createReducer<OrderState>(
     builder.addCase(removeOrders.fulfilled, (state, action) => {
       state.loading = false
       state.error = false
-     
-      state.data = state.data.filter((order) =>  !Boolean(action.payload[order.key]))
-     
+
+      state.data = state.data.filter(
+        (order) => !Boolean(action.payload[order.key])
+      )
     })
 
     builder.addCase(updateOrder.pending, (state, action) => {
@@ -160,6 +167,30 @@ export const orderReducer = createReducer<OrderState>(
           order.key === action.payload.key ? action.payload : order
         ),
       }
+    })
+    builder.addCase(completeDay.pending, (state, action) => {
+      return {
+        loading: true,
+        data: state.data,
+        error: false,
+      }
+    })
+
+    builder.addCase(completeDay.rejected, (state, action) => {
+      return {
+        loading: false,
+        data: state.data,
+        error: true,
+      }
+    })
+
+    builder.addCase(completeDay.fulfilled, (state, action) => {
+      state.loading = false
+      state.error = false
+
+      state.data = state.data = state.data.filter(
+        (order) => !Boolean(action.payload[order.key])
+      )
     })
   }
 )
