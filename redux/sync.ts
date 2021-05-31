@@ -1,6 +1,9 @@
 import { createReducer, createAsyncThunk } from '@reduxjs/toolkit'
 
 import { Client, Item } from '../src/data'
+import { BaseFetch } from '../src/data/axios'
+import { ClientAPI } from '../src/data/clientAPI'
+import { ItemAPI } from '../src/data/itemAPI'
 import { sleep } from '../utils/sleep'
 
 export interface SyncState {
@@ -25,51 +28,18 @@ const defaultState: SyncState = {
   items: defaultGroup,
 }
 
+const itemAPI =new ItemAPI()
+const clientAPI = new ClientAPI()
+
 export const findClients = createAsyncThunk<Client[]>(
   '@sync/fetchClients',
   async () => {
-    await sleep(2000)
-    return Promise.resolve([
-      {
-        id: 1,
-        address: '',
-        lastname: 'Olivo Sanchez',
-        phoneNumber: '',
-        name: 'Carlos',
-      },
-      {
-        id: 2,
-        address: '',
-        lastname: 'Joseador',
-        phoneNumber: '',
-        name: 'Josias',
-      },
-    ])
+    return clientAPI.find()
   }
 )
 export const findItems = createAsyncThunk('@sync/fetchItems', async () => {
-  return [
-    {
-      id: 1,
-      name: 'Dulce de leche',
-      price: 20,
-    },
-    {
-      id: 2,
-      name: 'Chocolate del 9 ',
-      price: 5,
-    },
-    {
-      id: 3,
-      name: 'Refresco',
-      price: 15,
-    },
-    {
-      id: 4,
-      name: 'Empanada',
-      price: 25,
-    },
-  ] as Item[]
+ 
+  return itemAPI.find()
 })
 export const SyncReducer = createReducer(defaultState, (builder) => {
   builder.addCase(findClients.pending, (state) => {

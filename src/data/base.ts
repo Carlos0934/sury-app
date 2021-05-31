@@ -59,20 +59,7 @@ export class APIConsumer<T extends BaseDTO>
     return data
   }
 
-  async findByPage(limit: number, offset: number): Promise<DataPage<T>> {
-    const response = await this.axios.get('', {
-      params: {
-        limit: limit,
-        offset: offset,
-      },
-    })
-    console.log(response.data)
-
-    return {
-      data: response.data.results as T[],
-      count: response.data.count as number,
-    }
-  }
+ 
 
   async save(data: Partial<T>): Promise<boolean> {
     const status = (await this.axios.post('/', data)).status

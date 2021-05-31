@@ -7,7 +7,6 @@ export interface ItemDTO extends BaseDTO {
   price: number
   cost: number
   name: string
-  category: number
   code: string
 }
 
@@ -16,8 +15,7 @@ export interface ClientDTO extends BaseDTO {
   name: string
   last_name: string
   phone_number: string
-  ubication: number
-  RNC: string
+ 
 }
 
 export type UserRolesDTO = 'employee' | 'admin' | 'seller'

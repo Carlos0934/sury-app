@@ -11,7 +11,6 @@ export interface Item extends BaseDTO {
   price: number
   cost: number
   name: string
-  category: CategoryDTO
   code: string
 }
 

@@ -5,7 +5,7 @@ import asyncStorage from '@react-native-async-storage/async-storage'
 
 export function AxiosErrorHandler(err: AxiosError): any {
   if (err.response) {
-    console.log(err.response?.data)
+   
 
     if (err.response.status >= 500 && err.response.data.detail) {
       NotificationService.Message(
@@ -59,16 +59,17 @@ export async function getToken(): Promise<null | string> {
 
   return auth.token
 }
+const host = 'http://10.0.0.237:8000'
 export class BaseFetch {
   public axios!: AxiosInstance
 
   constructor(protected url: string) {
     getToken().then((token) => {
-      token ??= ''
+      
 
       this.axios = Axios.create({
-        baseURL: '/api' + url,
-        timeout: 2000,
+        baseURL: host+'/api' + url,
+        timeout: 10000,
         headers: {
           Authorization: token,
         },
