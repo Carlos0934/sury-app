@@ -37,7 +37,7 @@ export const OrderView: React.FC<OrderViewProps> = ({ order, edit }) => {
                 <Text style = {styles.itemNumber}> Precio: ${item.item.price}  Cantidad: {item.quantity}</Text>
                
               </View>
-              <Text  style = {styles.itemTotal}> Total:{ item.item.price * item.quantity}</Text>
+              <Text  style = {styles.itemTotal}> Total: ${ item.item.price * item.quantity}</Text>
               
               
             </View>
