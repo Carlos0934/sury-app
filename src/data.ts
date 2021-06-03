@@ -1,4 +1,4 @@
-import { BaseDTO, CategoryDTO } from './dtos'
+import { BaseDTO } from './dtos'
 
 export interface Client extends BaseDTO {
   address: string

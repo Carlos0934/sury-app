@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Alert, StyleSheet, View } from 'react-native'
 import { Header, Icon } from 'react-native-elements'
-import { removeOrders } from '../redux/order'
+import { completeDay, removeOrders } from '../redux/order'
 import { clearSelectedOrders } from '../redux/selectdOrders'
 import { useAppDispatch, useAppSelector } from '../redux/store'
 
@@ -27,6 +27,24 @@ export const Topbar = () => {
 export const Toolbar = () => {
   const orders = useAppSelector((state) => state.selected.orders)
   const dispatch = useAppDispatch()
+  const sendOrder = () => {
+    Alert.alert(
+      'Enviar Pedidos',
+      'Esta seguro que desea enviar los pedidos selecionados?',
+      [
+        {
+          text: 'No',
+        },
+        {
+          text: 'Si',
+          onPress: () => {
+            dispatch(completeDay(Object.values(orders)))
+            dispatch(clearSelectedOrders())
+          },
+        },
+      ]
+    )
+  }
   const deleteToolbar = () => {
     Alert.alert(
       'Borrar pedidos',
@@ -52,6 +70,7 @@ export const Toolbar = () => {
         size={30}
         name='backup'
         style={styles.toolbarIcon}
+        onPress = {sendOrder}
       />
       <Icon
         color='#eb3434'

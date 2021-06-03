@@ -28,6 +28,9 @@ export class APIConsumer<T extends BaseDTO>
   extends BaseFetch
   implements APIPaged<T>
 {
+  constructor(endpoint : string) {
+    super('/api'+endpoint)
+  }
   async findOne(id: number): Promise<T> {
     const request = await this.axios.get('/' + id)
     if (request.status === 200) {

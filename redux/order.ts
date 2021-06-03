@@ -17,13 +17,7 @@ export const fetchOrders = createAsyncThunk('@order/fetchAll', async () => {
   const orders = await orderRepository.findAll()
   return orders
 })
-export const sendOrder = createAsyncThunk(
-  '@order/sendOne',
-  async (order: Order) => {
-    await orderRepository.sendOne(order)
-    return order
-  }
-)
+
 export const addOrder = createAsyncThunk(
   '@order/create',
   async (order: Order) => {
@@ -45,8 +39,8 @@ export const removeOrders = createAsyncThunk(
 
 export const completeDay = createAsyncThunk(
   '@order/completeDay',
-  async (orders: Order[]) => {
-    return await orderRepository.completeDay(orders)
+  (orders: Order[]) => {
+    return orderRepository.completeDay(orders)
   }
 )
 export const orderReducer = createReducer<OrderState>(
@@ -75,31 +69,6 @@ export const orderReducer = createReducer<OrderState>(
       }
     })
 
-    builder.addCase(sendOrder.pending, (state) => {
-      return {
-        data: state.data,
-        loading: true,
-        error: false,
-      }
-    })
-
-    builder.addCase(sendOrder.rejected, (state) => {
-      return {
-        data: state.data,
-        loading: false,
-        error: true,
-      }
-    })
-
-    builder.addCase(sendOrder.fulfilled, (state, action) => {
-      return {
-        data: state.data.map((order) =>
-          order.key === action.payload.key ? action.payload : order
-        ),
-        loading: false,
-        error: false,
-      }
-    })
 
     builder.addCase(addOrder.pending, (state, action) => {
       return {

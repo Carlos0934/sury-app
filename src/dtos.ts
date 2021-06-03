@@ -38,10 +38,12 @@ export interface UserAuthDTO {
 }
 
 export interface OrderDTO extends BaseDTO {
-  items: ItemQuantityDTO[]
-  total: number
-  client: number
-  created: string
+   
+  client : number
+  localCreated : string
+  items : ItemQuantityDTO[]
+  total : number
+  created : string
 }
 export type PaymentMethodDTO = 'T' | 'E'
 export type SaleMethodDTO = 'O' | 'P'

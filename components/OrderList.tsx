@@ -35,7 +35,7 @@ export const OrderList = () => {
       )}
     />
     {
-      data.length === 0 && <Text style = {styles.emptyOrders}>Aqui estaran tus pedidos, realiza uno</Text>
+      data.length === 0 && <Text style = {styles.emptyOrders}>Aqui estaran tus pedidos, realiza uno.</Text>
     }
     </View>
   )
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   emptyOrders : {
     textAlign : 'center',
     marginTop: 50,
+    fontSize : 17,
     justifyContent : 'center',
     fontWeight: "bold",
     marginHorizontal : '25%',

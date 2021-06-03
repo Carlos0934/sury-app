@@ -7,8 +7,9 @@ import {
   StyleSheet,
   View,
 } from 'react-native'
-import { Button, Input, Text } from 'react-native-elements'
+import { Button, Input, Text, SearchBar } from 'react-native-elements'
 import { ListItem } from 'react-native-elements'
+import { useSearchItem } from '../hooks/useSearchItem'
 import { addItem, removeItem } from '../redux/orderBuilder'
 import { useAppDispatch, useAppSelector } from '../redux/store'
 import { Item } from '../src/data'
@@ -19,11 +20,15 @@ export const ItemListView = () => {
   const dispatch = useAppDispatch()
   const [selectedItem, setSelectedItem] = React.useState<Item>()
   const [selectedQuantity, setSelectedQuantity] = React.useState<number>()
-
+  const {handleChange, result} = useSearchItem()
   return (
     <>
+    <SearchBar
+        platform='android'
+        onChangeText={(value) => handleChange(value)}
+      />
       <FlatList
-        data={items}
+        data={result}
         renderItem={({ item, index }) => (
           <ListItem
             key={item.price}
@@ -36,7 +41,7 @@ export const ItemListView = () => {
               }
             }}
           >
-            <ListItem.Title>{item.name}</ListItem.Title>
+            <ListItem.Title> {item.code} - {item.name}</ListItem.Title>
             <ListItem.Subtitle right>${item.price}</ListItem.Subtitle>
           </ListItem>
         )}

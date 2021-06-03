@@ -7,7 +7,7 @@ export class ItemQuantityMapper implements Mapper<ItemQuantity , ItemQuantityDTO
 
     itemAPI = new ItemAPI()
 
-    async dataToDTO(data : ItemQuantity) : Promise<ItemQuantityDTO> {
+    dataToDTO(data : ItemQuantity) : ItemQuantityDTO {
       
       
         return {
@@ -29,9 +29,9 @@ export class ItemQuantityMapper implements Mapper<ItemQuantity , ItemQuantityDTO
         }
     }
 
-    async MapToDTO(data : ItemQuantity[]) : Promise<ItemQuantityDTO[]> {
+    MapToDTO(data : ItemQuantity[]) : ItemQuantityDTO[] {
        
-        const itemQuantityDots : ItemQuantityDTO[] = await Promise.all(data.map(itemQuantity =>  this.dataToDTO(itemQuantity) ))
+        const itemQuantityDots : ItemQuantityDTO[] = data.map(itemQuantity =>  this.dataToDTO(itemQuantity) )
         
         return itemQuantityDots
     }

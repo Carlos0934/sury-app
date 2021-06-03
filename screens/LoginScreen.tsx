@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/core'
 import * as React from 'react'
 import { Alert, SafeAreaView, StyleSheet, Vibration, View } from 'react-native'
 import { Button, Icon, Image, Input } from 'react-native-elements'
+import { Loading } from '../components/Loading'
 import { Screens } from '../navigation'
 
 import { useAppDispatch, useAppSelector } from '../redux/store'
@@ -27,6 +28,7 @@ export default function LoginScreen() {
     }
   }, [user])
   return (
+    <>
     <SafeAreaView>
       <View style={styles.container}>
         <Image
@@ -68,8 +70,11 @@ export default function LoginScreen() {
             dispatch(login(data))
           }}
         />
+        
       </View>
     </SafeAreaView>
+    <Loading />
+    </>
   )
 }
 

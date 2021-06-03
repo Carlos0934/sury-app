@@ -2,9 +2,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import 'react-native-get-random-values'
 import { v4 } from 'uuid'
 import { Order } from '../data'
+import { OrderAPI } from './orderAPI'
 
 export class OrderRepository {
   private key: string = '|orders|'
+  private orderAPI = new OrderAPI()
   constructor() {}
 
   async save(order: Order): Promise<Order> {
@@ -56,10 +58,12 @@ export class OrderRepository {
     const orders = await this.findAll()
     return orders.find((order) => order.key === key)
   }
-  private async send(order: Order) {}
+  private async send(orders: Order[]) {
+    await this.orderAPI.sendOrders(orders)
+  }
   async sendOne(order: Order) {
     order.sent = true
-    // call api call
+    
     await this.update(order)
     return order.key
   }
@@ -69,7 +73,7 @@ export class OrderRepository {
     for (const order of orders) {
       const createdAt = new Date(order.created)
       if (this.sameDay(createdAt, now)) {
-        await this.send(order)
+        await this.send([order])
         await this.remove({ [order.key]: order })
         keys[order.key] = true
       }

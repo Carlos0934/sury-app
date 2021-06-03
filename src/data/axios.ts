@@ -1,7 +1,8 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 import Axios, { AxiosInstance, AxiosError } from 'axios'
 import { NotificationService } from '../services/notificationService'
-import { LOCAL_AUTH_KEY } from './config'
-import asyncStorage from '@react-native-async-storage/async-storage'
+
 
 export function AxiosErrorHandler(err: AxiosError): any {
   if (err.response) {
@@ -50,14 +51,15 @@ export function AxiosErrorHandler(err: AxiosError): any {
   return Promise.reject(err)
 }
 
+
 export async function getToken(): Promise<null | string> {
-  const data = await asyncStorage.getItem(LOCAL_AUTH_KEY)
+  const data = await AsyncStorage.getItem('auth-key')
   if (!data) {
     return null
   }
-  const auth = JSON.parse(data)
+  
 
-  return auth.token
+  return JSON.parse(data).token
 }
 const host = 'http://10.0.0.237:8000'
 export class BaseFetch {
@@ -68,7 +70,7 @@ export class BaseFetch {
       
 
       this.axios = Axios.create({
-        baseURL: host+'/api' + url,
+        baseURL: host + url,
         timeout: 10000,
         headers: {
           Authorization: token,
@@ -81,3 +83,6 @@ export class BaseFetch {
     })
   }
 }
+
+
+export default BaseFetch
