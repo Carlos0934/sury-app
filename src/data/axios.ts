@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
+import Constants  from 'expo-constants'
 import Axios, { AxiosInstance, AxiosError } from 'axios'
 import { NotificationService } from '../services/notificationService'
 
@@ -61,7 +61,8 @@ export async function getToken(): Promise<null | string> {
 
   return JSON.parse(data).token
 }
-const host = 'http://10.0.0.237:8000'
+
+const host = Constants.manifest.extra!.host
 export class BaseFetch {
   public axios!: AxiosInstance
 
