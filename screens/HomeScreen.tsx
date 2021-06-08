@@ -6,10 +6,13 @@ import { Topbar } from '../components/Topbar'
 import { Loading } from '../components/Loading'
 import { useAppDispatch } from '../redux/store'
 import { fetchOrders } from '../redux/order'
+import { useSync } from '../hooks/useSync'
 export default function HomeScreen() {
   const dispatch = useAppDispatch()
+  const {sync} = useSync()
   React.useEffect(() => {
     dispatch(fetchOrders())
+    sync()
   }, [])
   return (
     <>

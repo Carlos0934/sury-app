@@ -2,7 +2,7 @@ import { Item, Order } from "../data";
 import { OrderDTO } from "../dtos";
 import { ItemQuantityMapper } from "../mappers/itemQuantityMapper";
 import { APIConsumer } from "./base";
-import {format} from 'date-fns'
+
 
 
 
@@ -24,7 +24,7 @@ export class OrderAPI extends APIConsumer<OrderDTO> {
             
             client : order.client.id,
             items, 
-            localCreated : format( new Date(order.created), 'yyyy-MM-dd HH:mm')
+            localCreated : new Date(order.created).toISOString()
         }
     }
     public async sendOrders(orders : Order[]) : Promise<void> {
