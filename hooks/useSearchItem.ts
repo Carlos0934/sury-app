@@ -2,12 +2,13 @@ import { useAppSelector } from '../redux/store'
 import { useSearch } from './useSearch'
 
 export const useSearchItem = () => {
-  const { data } = useAppSelector((state) => state.sync.items)
-  const { handleChange, result } = useSearch(data, (item, text) =>
-    (item.name + item.price + item.code  + item.id)
+  const data = useAppSelector((state) => state.sync.items.data)
+  const { handleChange, result, search } = useSearch(data, (item, text) =>
+    (item.name + item.price + item.code )
       .toLowerCase()
       .includes(text.toLowerCase())
   )
+  
 
-  return { handleChange, result }
+  return { handleChange, result, search }
 }

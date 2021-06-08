@@ -1,8 +1,10 @@
 import * as React from 'react'
 import { View } from 'react-native'
-import { SearchBar, ListItem } from 'react-native-elements'
-import { FAB } from 'react-native-elements/dist/buttons/FAB'
-import { Icon } from 'react-native-elements/dist/icons/Icon'
+import {  ListItem} from 'react-native-elements'
+
+
+
+import {SearchBar} from './SearchBar'
 
 import { useSearchClient } from '../hooks/useSearchClient'
 import { Client } from '../src/data'
@@ -13,21 +15,19 @@ export type SelectClientProps = {
 export const SelectClient: React.FC<SelectClientProps> = ({
   onClientSelected,
 }) => {
-  const { result, handleChange } = useSearchClient()
-
+  const { result, handleChange, search } = useSearchClient()
+ 
   return (
     <>
-      <SearchBar
-        platform='android'
-        onChangeText={(value) => handleChange(value)}
-      />
+      <SearchBar handleSearch = {handleChange} search = {search}   placeholder = 'Buscar Cliente'/>
+      
       <View>
         {result.map((client, i) => (
           <ListItem key={i} onPress={() => onClientSelected(client)}>
             <ListItem.Title>
               {client.name + ' ' + client.lastname}
             </ListItem.Title>
-            <ListItem.Subtitle>{}</ListItem.Subtitle>
+            
           </ListItem>
         ))}
       </View>

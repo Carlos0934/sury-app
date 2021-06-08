@@ -30,15 +30,15 @@ export const OrderBuilderReducer = createReducer<OrderBuilderState>(
     })
 
     builder.addCase(addItem, (state, action) => {
-      const detail = state.items[action.payload.item.name]
+      const detail = state.items[action.payload.item.code]
       if (detail)
-        state.items[action.payload.item.name].quantity +=
+        state.items[action.payload.item.code].quantity +=
           action.payload.quantity
-      else state.items[action.payload.item.name] = action.payload
+      else state.items[action.payload.item.code] = action.payload
     })
 
     builder.addCase(removeItem, (state, action) => {
-      delete state.items[action.payload.name]
+      delete state.items[action.payload.code]
     })
 
     builder.addCase(setTotal, (state) => {

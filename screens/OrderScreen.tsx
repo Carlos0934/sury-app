@@ -14,7 +14,7 @@ export function OrderScreen() {
         order={{
           client,
           items: Object.values(items),
-          total,
+          total :  Object.values(items).reduce((acc,value ) => acc + value.item.price * value.quantity, 0),
         }}
       />
     </>

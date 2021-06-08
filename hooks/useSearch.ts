@@ -4,7 +4,7 @@ export const useSearch = <T>(
   data: T[],
   predicate: (value: T, text: string) => boolean
 ) => {
-  const [search, setSearch] = useState<string>()
+  const [search, setSearch] = useState<string>('')
   const handleChange = useCallback(
     (text: string) => {
       setSearch(text)
@@ -15,5 +15,5 @@ export const useSearch = <T>(
     () => (search ? data.filter((value) => predicate(value, search)) : data),
     [predicate, data, search]
   )
-  return { handleChange, result }
+  return { handleChange, result, search }
 }

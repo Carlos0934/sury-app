@@ -1,16 +1,15 @@
 import { useNavigation } from '@react-navigation/core'
 import * as React from 'react'
-import { Alert } from 'react-native'
-import { FAB, Icon } from 'react-native-elements'
-
-import { v4 } from 'uuid'
-import { Screens } from '../navigation'
 import { addOrder } from '../redux/order'
-import { resetBuilder } from '../redux/orderBuilder'
 import { useAppDispatch, useAppSelector } from '../redux/store'
+import { v4 } from 'uuid'
+import { resetBuilder } from '../redux/orderBuilder'
+import { Screens } from '../navigation'
+import { Button, Icon } from 'react-native-elements'
+import { Alert } from 'react-native'
 
-export const CompleteOrderAction = () => {
-  const { items, client, total } = useAppSelector((state) => state.builder)
+export const CompleteOrderButton : React.FC = () => {
+    const { items, client, total } = useAppSelector((state) => state.builder)
   const dispatch = useAppDispatch()
  
   const {navigate} = useNavigation()
@@ -35,7 +34,12 @@ export const CompleteOrderAction = () => {
    
   }
   return (
-    <FAB
+    <Button
+    buttonStyle = {{
+      marginHorizontal : 15,
+      height: 50
+    }}
+    title = 'Completar'
       onPress={() => {
         Alert.alert(
           'Confirmación',
@@ -52,8 +56,11 @@ export const CompleteOrderAction = () => {
           ]
         )
       }}
-      placement='right'
-      icon={<Icon name='done' color='white' />}
+      iconPosition  ='right'
+     
+      icon={<Icon name='done'  color='white' containerStyle = {{
+        paddingHorizontal : 5,
+      }} />}
     />
   )
 }

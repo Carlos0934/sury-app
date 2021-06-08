@@ -1,153 +1,77 @@
 import * as React from 'react'
 import {
-  Alert,
+
   FlatList,
-  Modal,
-  Pressable,
+
   StyleSheet,
   View,
 } from 'react-native'
-import { Button, Input, Text, SearchBar } from 'react-native-elements'
+import { Text } from 'react-native-elements'
 import { ListItem } from 'react-native-elements'
 import { useSearchItem } from '../hooks/useSearchItem'
-import { addItem, removeItem } from '../redux/orderBuilder'
+import { removeItem } from '../redux/orderBuilder'
 import { useAppDispatch, useAppSelector } from '../redux/store'
-import { Item } from '../src/data'
+import { ItemQuantity } from '../src/data'
+import { ModalSelectQuantity } from './ModalSelectQuantity'
+import { SearchBar } from './SearchBar'
 
 export const ItemListView = () => {
-  const items = useAppSelector((state) => state.sync.items.data)
+
   const selectedItems = useAppSelector((state) => state.builder.items)
   const dispatch = useAppDispatch()
-  const [selectedItem, setSelectedItem] = React.useState<Item>()
-  const [selectedQuantity, setSelectedQuantity] = React.useState<number>()
-  const {handleChange, result} = useSearchItem()
+
+  const [selectedItem, setSelectedItem] = React.useState<Partial<ItemQuantity> | null>(null)
+  const {handleChange, result, search} = useSearchItem()
   return (
     <>
-    <SearchBar
-        platform='android'
-        onChangeText={(value) => handleChange(value)}
-      />
+      <SearchBar placeholder = 'Buscar Artciculo' handleSearch = {handleChange} search = {search}/>
+  
       <FlatList
         data={result}
         renderItem={({ item, index }) => (
           <ListItem
-            key={item.price}
-            style={{ marginVertical: 5 }}
+            key={item.code}
+            containerStyle={[styles.listItem, selectedItems[item.code]  ?  styles.listItemSelected : {}]}
             onPress={() => {
-              if (selectedItems[item.name]) {
+              if (selectedItems[item.code]) {
                 dispatch(removeItem(item))
               } else {
-                setSelectedItem(item)
+                setSelectedItem({
+                  item : item,
+                  quantity : 0
+                })
               }
             }}
           >
-            <ListItem.Title> {item.code} - {item.name}</ListItem.Title>
-            <ListItem.Subtitle right>${item.price}</ListItem.Subtitle>
+            <Text style = {{fontWeight : '700'}}>{item.code}  {item.name}</Text>
+            <Text>${item.price}</Text>
+            
+            <View style = {{width : 200}}>
+            <Text style = {{
+              textAlign : 'right',
+              
+              
+            }}>Cantidad seclecionada:   {selectedItems[item.code]?.quantity ?? 0}</Text>
+            </View>
+           
           </ListItem>
         )}
       />
-      <Modal
-        animationType='slide'
-        transparent={true}
-        visible={Boolean(selectedItem)}
-        onRequestClose={() => {
-          setSelectedItem(undefined)
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Input
-              labelStyle={{
-                textAlign: 'center',
-              }}
-              inputContainerStyle={styles.input}
-              onChangeText={(e) => setSelectedQuantity(Number(e))}
-              textAlign='center'
-              keyboardType='numeric'
-              label='Cantidad'
-            />
-            <Text h4>
-              $
-              {selectedQuantity !== undefined && selectedItem !== undefined
-                ? selectedItem.price * selectedQuantity
-                : 0}
-            </Text>
-            <Button
-              containerStyle={styles.button}
-              title='Agregar'
-              onPress={() => {
-                if (selectedQuantity && selectedItem && selectedQuantity > 0) {
-                  dispatch(
-                    addItem({
-                      item: selectedItem,
-                      quantity: selectedQuantity,
-                    })
-                  )
-                  setSelectedItem(undefined)
-                  setSelectedQuantity(undefined)
-                }
-              }}
-            />
-            <Button
-              onPress={() => {
-                setSelectedItem(undefined)
-                setSelectedQuantity(undefined)
-              }}
-              title='Salir'
-              type='outline'
-              titleStyle={{
-                color: '#fff',
-              }}
-              containerStyle={styles.buttonClose}
-            />
-          </View>
-        </View>
-      </Modal>
+      <ModalSelectQuantity selectedItem = {selectedItem} onSelectedItem ={setSelectedItem}/>
     </>
   )
 }
 
 const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 25,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    borderRadius: 20,
-
-    marginTop: 20,
-    elevation: 2,
-    width: 200,
-
-    backgroundColor: '#2196F3',
-    color: '#fff',
-  },
-
-  buttonClose: {
-    marginTop: 20,
-    backgroundColor: '#fd3030',
-    borderRadius: 20,
-    elevation: 1,
-    width: 200,
-  },
+  
   input: {
     width: 150,
   },
+  listItem : {
+    width: '100%'
+  },
+  listItemSelected : {
+    backgroundColor : '#d3d3d3'
+  }
 })
+

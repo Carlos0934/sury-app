@@ -1,10 +1,11 @@
 
 import * as React from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
-import { Divider,Text } from 'react-native-elements'
+import { Button, Divider,ListItem,Text } from 'react-native-elements'
 
 import { Client, ItemQuantity, Order } from '../src/data'
 import { CompleteOrderAction } from './CompleteOrderAction'
+import { CompleteOrderButton } from './CompleteOrderButton'
 
 interface OrderView {
   items: ItemQuantity[]
@@ -19,32 +20,42 @@ export const OrderView: React.FC<OrderViewProps> = ({ order, edit }) => {
   return (
     <>
       <View style={styles.container}>
+        
         <Text h3 style={styles.clientTitle}>
           {order.client.name}
         </Text>
-        <Text style={styles.clientTitle} h4>
-          ${order.total}
+        <Text style={styles.clientTitle} h4 >
+          Total: ${order.total}
         </Text>
         <Divider />
+        <View>
         <FlatList
+        contentContainerStyle = {{
+         
+          minHeight : '60%'
+        }}
         keyExtractor = {(item) => item.item.id.toString() }
           data={order.items}
           renderItem={({ item }) => (
-            <View key={item.item.id.toString()} style={styles.item}>
+            <ListItem key = {item.item.code} containerStyle = {styles.item} >
+                
               <Text style = {[styles.itemName, styles.itemText]}>{item.item.name}</Text>
-              <View style = {styles.itemDetail}>
+             
               
-                <Text style = {styles.itemNumber}> Precio: ${item.item.price}  Cantidad: {item.quantity}</Text>
+              <Text style = {styles.itemNumber}> Precio: ${item.item.price}  Cantidad: {item.quantity}</Text>
                
-              </View>
+          
               <Text  style = {styles.itemTotal}> Total: ${ item.item.price * item.quantity}</Text>
               
-              
-            </View>
+              </ListItem>
+        
           )}
         />
+     
+        </View>
+       
       </View>
-      {edit && <CompleteOrderAction />}
+      {edit &&  <CompleteOrderButton/>}
     </>
   )
 }
@@ -58,6 +69,8 @@ const styles = StyleSheet.create({
     marginTop: '10%',
   },
   item: {
+    marginHorizontal : 'auto',
+    justifyContent : 'center',
     marginVertical : 10,
     width : '100%',
     backgroundColor : '#fff',
