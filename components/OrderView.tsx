@@ -38,14 +38,17 @@ export const OrderView: React.FC<OrderViewProps> = ({ order, edit }) => {
           data={order.items}
           renderItem={({ item }) => (
             <ListItem key = {item.item.code} containerStyle = {styles.item} >
+              <ListItem.Content>
+                <ListItem.Title>{item.item.name} - {item.item.code}</ListItem.Title>
+                <ListItem.Subtitle>
                 
-              <Text style = {[styles.itemName, styles.itemText]}>{item.item.name}</Text>
+                Precio: ${item.item.price}  Cantidad: {item.quantity}  Total: ${ item.item.price * item.quantity} 
              
-              
-              <Text style = {styles.itemNumber}> Precio: ${item.item.price}  Cantidad: {item.quantity}</Text>
-               
-          
-              <Text  style = {styles.itemTotal}> Total: ${ item.item.price * item.quantity}</Text>
+           
+                </ListItem.Subtitle>
+              </ListItem.Content>
+                
+       
               
               </ListItem>
         

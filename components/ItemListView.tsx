@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 import { Text } from 'react-native-elements'
 import { ListItem } from 'react-native-elements'
+import { Icon } from 'react-native-elements'
 import { useSearchItem } from '../hooks/useSearchItem'
 import { removeItem } from '../redux/orderBuilder'
 import { useAppDispatch, useAppSelector } from '../redux/store'
@@ -24,8 +25,11 @@ export const ItemListView = () => {
   const {handleChange, result, search} = useSearchItem()
   return (
     <>
-      <SearchBar placeholder = 'Buscar Artciculo' handleSearch = {handleChange} search = {search}/>
-  
+     <SearchBar placeholder = 'Buscar Artciculo' handleSearch = {handleChange} search = {search}/>
+    
+ 
+     
+
       <FlatList
         data={result}
         renderItem={({ item, index }) => (
@@ -46,7 +50,7 @@ export const ItemListView = () => {
             <Text style = {{fontWeight : '700'}}>{item.code}  {item.name}</Text>
             <Text>${item.price}</Text>
             
-            <View style = {{width : 200}}>
+            <View style = {{width : '50%'}}>
             <Text style = {{
               textAlign : 'right',
               

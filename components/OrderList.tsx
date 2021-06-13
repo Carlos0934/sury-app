@@ -29,6 +29,7 @@ export const OrderList = () => {
       ListFooterComponent={<SafeAreaView />}
       renderItem={({ item, index }) => (
         <OrderListItem
+        
           order={item}
           key={index}
           onSelect={onSelect}

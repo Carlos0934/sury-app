@@ -9,12 +9,14 @@ export type OrderListItemProps = {
   order: Order
   selected?: boolean
   onSelect(order: Order): void
+  
 }
 export const OrderListItem: React.FC<OrderListItemProps> = React.memo(
   ({ order, selected, onSelect }) => {
     
     return (
       <TouchableOpacity
+        onLongPress = {() => {}}
         onPress={() =>  onSelect(order)}
         style={[styles.container, selected ? styles.containerSelected : {}]}
       >
