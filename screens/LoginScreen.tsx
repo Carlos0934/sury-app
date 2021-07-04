@@ -3,6 +3,9 @@ import * as React from 'react'
 import { Alert, SafeAreaView, StyleSheet, Vibration, View } from 'react-native'
 import { Button, Icon, Image, Input } from 'react-native-elements'
 import { Loading } from '../components/Loading'
+import { ModalPreferences } from '../components/ModalPreferences'
+
+
 import { Screens } from '../navigation'
 
 import { useAppDispatch, useAppSelector } from '../redux/store'
@@ -10,10 +13,13 @@ import { login, LoginView } from '../redux/user'
 
 export default function LoginScreen() {
   const dispatch = useAppDispatch()
+  
+
   const [data, setData] = React.useState<LoginView>({
     user: '',
     password: '',
   })
+  const [preferences, SetPreferences] = React.useState(false)
   const { navigate } = useNavigation()
   const user = useAppSelector((state) => state.user)
   React.useEffect(() => {
@@ -27,9 +33,14 @@ export default function LoginScreen() {
       Vibration.vibrate([0, 200])
     }
   }, [user])
+ 
   return (
     <>
     <SafeAreaView>
+      <View style = {styles.settings}>
+        <Icon name = 'settings' size = {30} color = '#777' onPress = {() => SetPreferences(true)}/>
+        
+      </View>
       <View style={styles.container}>
         <Image
           style={styles.image}
@@ -73,6 +84,8 @@ export default function LoginScreen() {
         
       </View>
     </SafeAreaView>
+    <ModalPreferences visible = {preferences} close = {() => SetPreferences(false)} />
+    
     <Loading />
     </>
   )
@@ -82,7 +95,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 100,
+    marginVertical: 50,
     paddingHorizontal: 25,
   },
   input: {
@@ -98,4 +111,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderRadius: 5,
   },
+  settings : {
+    marginTop : 50,
+    marginRight: 25,
+    justifyContent : 'flex-end',
+    alignItems : 'flex-end',
+    
+    
+  }
 })

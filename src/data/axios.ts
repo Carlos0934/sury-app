@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import Constants  from 'expo-constants'
 import Axios, { AxiosInstance, AxiosError } from 'axios'
 import { NotificationService } from '../services/notificationService'
+import { PreferencesManager } from './preferencesManager'
 
 
 export function AxiosErrorHandler(err: AxiosError): any {
@@ -62,25 +63,29 @@ export async function getToken(): Promise<null | string> {
   return JSON.parse(data).token
 }
 
-const host = Constants.manifest.extra!.host
+const preferencesManager = new PreferencesManager()
+
 export class BaseFetch {
   public axios!: AxiosInstance
 
   constructor(protected url: string) {
     getToken().then((token) => {
       
-
-      this.axios = Axios.create({
-        baseURL: host + url,
-        timeout: 10000,
-        headers: {
-          Authorization: token,
-        },
+      preferencesManager.getPreferences().then(preferences => {
+        this.axios = Axios.create({
+          baseURL: preferences.ip + url,
+          timeout: 10000,
+          headers: {
+            Authorization: token,
+          },
+        })
+     
+     
+        this.axios.interceptors.response.use((res) => {
+          return res
+        }, AxiosErrorHandler)
       })
-
-      this.axios.interceptors.response.use((res) => {
-        return res
-      }, AxiosErrorHandler)
+    
     })
   }
 }

@@ -3,6 +3,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { orderReducer } from './order'
 import { OrderBuilderReducer } from './orderBuilder'
+import { preferenceReducer } from './preferences'
 import { selectedOrdersReducer } from './selectdOrders'
 import { SyncReducer } from './sync'
 import { UserReducer } from './user'
@@ -14,6 +15,7 @@ export const store = configureStore({
     sync: SyncReducer,
     builder: OrderBuilderReducer,
     user: UserReducer,
+    preferences : preferenceReducer
   },
 })
 
